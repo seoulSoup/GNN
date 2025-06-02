@@ -68,3 +68,28 @@ for sample in listDataSet:
     print('최적값: ', prob.value)
 
     break
+    
+import plotly.express as px
+import pandas as pd
+
+ganttData = []
+for j in range(J):
+    idMachine = int(np.argmax(z.value[j], axis=0))
+    ganttData.append({
+        'Job': f'Job {j}',
+        'Start': float(s.value[j]),
+        'Finish': float(C.value[j]),
+        'Machine': f'Mahchine {idMachine}'
+    })
+dfGantt = pd.DataFrame(ganttData)
+print(dfGantt)
+
+fig = px.timeline(dfGantt, 
+x_start='Start', 
+x_end='Finish', 
+y='Machine', 
+color='Job', 
+title='Gantt Chart',
+hover_data=['Job'])
+fig.update_yaxes(title='Machine Index', autorange='reversed', categoryorder='category ascending')
+fig.show()
